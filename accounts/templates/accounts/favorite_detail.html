@@ -1,0 +1,79 @@
+
+{% extends 'catalog/base.html' %}
+
+{% load static %}
+
+
+{% block title %}{{favorite.substitute.name}}{% endblock %}
+
+
+{% block content %}
+<div class="container-fluid py-5 px-0">
+    <div class="banner" id="product-detail-banner" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url({{favorite.substitute.picture}});">
+        <div class="container">
+            <h2>{{favorite.substitute.name}}</h2>
+        </div>
+    </div>
+    <div class="product-detail-infos">
+        <div class="product-nutriscore">
+            {% if favorite.substitute.nutriscore == "A" %}
+                <img src={% static 'catalog/assets/img/nutriscore-a.svg' %} alt="nutriscore-a">
+            {% elif favorite.substitute.nutriscore == "B" %}
+                <img src={% static 'catalog/assets/img/nutriscore-b.svg' %} alt="nutriscore-b">
+            {% elif favorite.substitute.nutriscore == "C" %}
+                <img src={% static 'catalog/assets/img/nutriscore-c.svg' %} alt="nutriscore-c">
+            {% elif favorite.substitute.nutriscore == "D" %}
+                <img src={% static 'catalog/assets/img/nutriscore-d.svg' %} alt="nutriscore-d">
+            {% elif favorite.substitute.nutriscore == "E" %}
+                <img src={% static 'catalog/assets/img/nutriscore-e.svg' %} alt="nutriscore-e">
+            {% endif %}
+        </div>
+        <div class="nutrients-list">
+            <p>Valeurs nutritionnelles (100g):</p>
+            <ul>
+                <li>Energie: {{ favorite.substitute.nutrients.kcal }}Kcal</li>
+                <li>Protéines: {{ favorite.substitute.nutrients.proteins }}g</li>
+                <li>Glucides: {{ favorite.substitute.nutrients.carbohydrates }}g</li>
+                <li>dont sucres: {{ favorite.substitute.nutrients.sugars }}g</li>
+                <li>Lipides: {{ favorite.substitute.nutrients.fat }}g</li>
+                <li>dont acides gras saturés: {{ favorite.substitute.nutrients.saturated_fat }}g</li>
+            </ul>
+        </div>
+    </div>
+    <div class="product-detail-link">
+        <a class="openfoodfacts-link" href={{ favorite.substitute.url }} target="_blank">Voir la fiche d'OpenFoodFacts</a>
+    </div>
+    <div class="favorite-more-infos">
+        <div class="substituted-product">
+            <p>Aliment substitué:</p>
+            <a class="call-to-action-link" href="{% url 'product_detail' favorite.product.pk %}">
+                <div class="call-to-action">
+                    <i class="fas fa-eye"></i>
+                    <p>{{ favorite.product.name }}</p>
+                </div>
+            </a>
+        </div>
+        <div>
+            <form id="favorite-delete-form" method="POST" action="{% url 'delete_favorite' favorite.pk %}">
+                {% csrf_token %}
+                <input type="hidden" name="data"/>
+            </form>
+            <a class="call-to-action-link" href="#" onclick='document.getElementById("favorite-delete-form").submit()'>
+                <div class="call-to-action">
+                    <i class="fas fa-trash-alt"></i>
+                    <p>Supprimer</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div {% if message.tags %} class="alert {{ message.tags }} alert-dismissible" role="alert" {% endif %}>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock content %}

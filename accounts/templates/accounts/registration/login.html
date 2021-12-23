@@ -1,0 +1,30 @@
+
+{% extends 'catalog/base.html' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block content %}
+<div class="container-fluid connection">
+  <div class="row">
+    <div class="col-12 text-center title">
+      <h2>Connexion</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 text-center justify-content-center form">
+      <form method="post">
+        {% csrf_token %}
+        {{ auth_form.as_p }}
+        <button class="btn btn-primary" type="submit">Se connecter</button>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 text-center justify-content-center signup-link">
+      <h5>Vous n'avez pas encore de compte ?</h5>
+      <a href="/accounts/signup">Créer un compte</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

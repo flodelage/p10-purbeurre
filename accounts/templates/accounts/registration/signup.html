@@ -1,0 +1,30 @@
+
+{% extends 'catalog/base.html' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block content %}
+<div class="container-fluid connection">
+  <div class="row">
+    <div class="col-12 text-center title">
+      <h2>Inscription</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 text-center justify-content-center form">
+      <form method="post">
+        {% csrf_token %}
+        {{ signup_form.as_p }}
+        <button class="btn btn-primary" type="submit">S'inscrire</button>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 text-center justify-content-center signup-link">
+      <h5>Vous avez déjà un compte ?</h5>
+      <a href="/accounts/login">Se connecter</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

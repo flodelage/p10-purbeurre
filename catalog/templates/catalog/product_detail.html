@@ -1,0 +1,46 @@
+
+{% extends 'catalog/base.html' %}
+
+{% load static %}
+
+
+{% block title %}{{product.name}}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-5 px-0">
+    <div class="banner" id="product-detail-banner" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url({{product.picture}});">
+        <div class="container">
+            <h2>{{product.name}}</h2>
+        </div>
+    </div>
+    <div class="product-detail-infos">
+        <div class="product-nutriscore">
+            {% if product.nutriscore == "A" %}
+                <img src={% static 'catalog/assets/img/nutriscore-a.svg' %} alt="nutriscore-a">
+            {% elif product.nutriscore == "B" %}
+                <img src={% static 'catalog/assets/img/nutriscore-b.svg' %} alt="nutriscore-b">
+            {% elif product.nutriscore == "C" %}
+                <img src={% static 'catalog/assets/img/nutriscore-c.svg' %} alt="nutriscore-c">
+            {% elif product.nutriscore == "D" %}
+                <img src={% static 'catalog/assets/img/nutriscore-d.svg' %} alt="nutriscore-d">
+            {% elif product.nutriscore == "E" %}
+                <img src={% static 'catalog/assets/img/nutriscore-e.svg' %} alt="nutriscore-e">
+            {% endif %}
+        </div>
+        <div class="nutrients-list">
+            <p>Valeurs nutritionnelles (100g):</p>
+            <ul>
+                <li>Energie: {{ product.nutrients.kcal }}Kcal</li>
+                <li>Protéines: {{ product.nutrients.proteins }}g</li>
+                <li>Glucides: {{ product.nutrients.carbohydrates }}g</li>
+                <li>dont sucres: {{ product.nutrients.sugars }}g</li>
+                <li>Lipides: {{ product.nutrients.fat }}g</li>
+                <li>dont acides gras saturés: {{ product.nutrients.saturated_fat }}g</li>
+            </ul>
+        </div>
+    </div>
+    <div class="product-detail-link">
+        <a class="openfoodfacts-link" href={{ product.url }} target="_blank">Voir la fiche d'OpenFoodFacts</a>
+    </div>
+</div>
+{% endblock content %}

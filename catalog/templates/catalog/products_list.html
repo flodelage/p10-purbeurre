@@ -1,0 +1,56 @@
+
+{% extends 'catalog/base.html' %}
+
+
+{% block title %}Produits{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-5 px-0">
+    <div class="row">
+        <div class="col-12 pt-5 pb-3 px-0 text-center products-list-title">
+            {% if products %}
+                <h2>Choisissez un aliment à substituer:</h2>
+            {% else %}
+                <h2>Votre recherche n'a donné aucun résultat</h2>
+            {% endif %}
+        </div>
+    </div>
+    <div class="searchpage-container">
+        <div class="cards-product">
+            {% if products %}
+                {% for product in products %}
+                <div class="product">
+                    <a href="{% url 'product_detail' product.pk %}" class="card-product-link">
+                        <div class="card-product">
+                            <img src={{ product.picture }} alt="food picture">
+                            <div class="card-product-infos">
+                                <div>
+                                    <h2 class="card-product-name">{{product.name}}</h2>
+                                </div>
+                                {% if product.nutriscore == "A" %}
+                                    <h2 class="card-product-nutriscore-a">A</h2>
+                                {% elif product.nutriscore == "B" %}
+                                    <h2 class="card-product-nutriscore-b">B</h2>
+                                {% elif product.nutriscore == "C" %}
+                                    <h2 class="card-product-nutriscore-c">C</h2>
+                                {% elif product.nutriscore == "D" %}
+                                    <h2 class="card-product-nutriscore-d">D</h2>
+                                {% elif product.nutriscore == "E" %}
+                                    <h2 class="card-product-nutriscore-e">E</h2>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'substitutes_list' product.pk %}" class="call-to-action-link">
+                        <div class="call-to-action">
+                            <i class="fas fa-exchange-alt"></i>
+                            <p>Substituer</p>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

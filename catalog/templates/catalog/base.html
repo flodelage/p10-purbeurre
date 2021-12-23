@@ -1,0 +1,80 @@
+
+{% load static %}
+{% load custom_tags %}
+
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Favicon-->
+    <link rel="shortcut icon" type="image/png" href="{% static 'catalog/assets/img/logo-pur-beurre-favicon.png' %}">
+    <!-- Font Awesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+    <!-- Bootstrap Icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Scope+One" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <!-- SimpleLightbox plugin CSS-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet">
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{% static 'catalog/css/main.css' %}" rel="stylesheet">
+  </head>
+  <body id="page-top">
+    <!-- Navigation-->
+    <nav class="fixed-top" id="navbar">
+      <a class="navbar-brand-link" href="/">
+        <div class="navbar-brand">
+          <img class="navbar-logo" src={% static 'catalog/assets/img/logo-pur-beurre.png' %} alt="logo pur beurre">
+          <h5 class="navbar-title">Pur Beurre</h5>
+        </div>
+      </a>
+
+      <div class="navbar-search-and-links">
+        <form id="navbar-search" class="form-inline" method="POST" action="{% url 'products_list' %}">
+          {% csrf_token %}
+          {{ navbar_form }}
+        </form>
+
+        <ul class="navbar-links">
+          {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'account' %}"><i class="fas fa-user"></i></a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'favorites' %}"><i class="fas fa-heart"></i></a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i></a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><i class="fas fa-user"></i></a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+    {% block content %}
+    {% endblock %}
+    <!-- Footer-->
+    <footer id="footer" class="bg-light fixed-bottom">
+      <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-6 text-center">
+            <a class="footer-link" href="{% url 'legal_mentions' %}">Mentions légales</a>
+          </div>
+          <div class="col-6 text-center">
+            <a class="footer-link" href="{% anchor 'home' 'contact' %}">Contact</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SimpleLightbox plugin JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
+    <!-- JQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <!-- Axios-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+  </body>
+  </html>

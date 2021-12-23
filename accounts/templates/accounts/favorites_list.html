@@ -1,0 +1,70 @@
+
+{% extends 'catalog/base.html' %}
+
+
+{% block title %}Favoris{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-5 px-0">
+    <div class="row">
+        <div class="col-12 pt-5 pb-3 px-0 text-center products-list-title">
+            <h2>Mes aliments</h2>
+        </div>
+    </div>
+    <div class="searchpage-container">
+        <div class="cards-product">
+            {% if favorites %}
+                {% for favorite in favorites %}
+                    <div class="product">
+                        <a href="{% url 'favorite_detail' favorite.pk %}" class="card-product-link">
+                            <div class="card-product">
+                                <img src={{ favorite.substitute.picture }} alt="food picture">
+                                <div class="card-product-infos">
+                                    <div>
+                                        <h2 class="card-product-name">{{favorite.substitute.name}}</h2>
+                                    </div>
+                                    {% if favorite.substitute.nutriscore == "A" %}
+                                        <h2 class="card-product-nutriscore-a">A</h2>
+                                    {% elif favorite.substitute.nutriscore == "B" %}
+                                        <h2 class="card-product-nutriscore-b">B</h2>
+                                    {% elif favorite.substitute.nutriscore == "C" %}
+                                        <h2 class="card-product-nutriscore-c">C</h2>
+                                    {% elif favorite.substitute.nutriscore == "D" %}
+                                        <h2 class="card-product-nutriscore-d">D</h2>
+                                    {% elif favorite.substitute.nutriscore == "E" %}
+                                        <h2 class="card-product-nutriscore-e">E</h2>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+
+                        <form id="favorite-delete-form" method="POST" action="{% url 'delete_favorite' favorite.pk %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="data"/>
+                        </form>
+                        <a class="call-to-action-link" href="#" onclick='document.getElementById("favorite-delete-form").submit()'>
+                            <div class="call-to-action">
+                                <i class="fas fa-trash-alt"></i>
+                                <p>Supprimer</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Aucun aliment sauvegardé</p>
+            {% endif %}
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div {% if message.tags %} class="alert {{ message.tags }} alert-dismissible" role="alert" {% endif %}>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
