@@ -1,5 +1,5 @@
 # Pur Beurre
-This application is the eighth project of the OpenClassrooms' Python developer course.
+This application is the tenth project of the OpenClassrooms' Python developer course.
 Site en production sur Heroku: https://p8-pur-beurre.herokuapp.com/
 
 ## Application description
