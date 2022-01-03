@@ -14,6 +14,9 @@ from django.conf import global_settings
 
 import django_heroku
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 
 MESSAGE_TAGS = {
         messages.DEBUG: 'alert-secondary',
@@ -30,10 +33,32 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('D_DJANGO_KEY')
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+if os.environ.get('ENV') == 'production':
+	SECRET_KEY = os.environ.get('P_DJANGO_KEY')
+	DEBUG = False
+	DATABASES = {
+    		'default': {
+        		'ENGINE': 'django.db.backends.postgresql',
+        		'NAME': os.environ.get('P_DB_NAME'),
+        		'USER': os.environ.get('P_DB_USER'),
+        		'PASSWORD': os.environ.get('P_DB_PASSWORD'),
+        		'HOST': '127.0.0.1',
+        		'PORT': '5432',
+		}
+	}
+else:
+	SECRET_KEY = os.environ.get('D_DJANGO_KEY')
+	DEBUG = False
+	DATABASES = {
+    		'default': {
+        		'ENGINE': 'django.db.backends.postgresql',
+        		'NAME': os.environ.get('D_DB_NAME'),
+        		'USER': os.environ.get('D_DB_USER'),
+        		'PASSWORD': os.environ.get('D_DB_PASSWORD'),
+        		'HOST': '127.0.0.1',
+        		'PORT': '5432',
+		}
+	}
 
 ALLOWED_HOSTS = ['159.65.61.135']
 
@@ -84,22 +109,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pur_beurre.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('D_DB_NAME'),
-        'USER': os.environ.get('D_DB_USER'),
-        'PASSWORD': os.environ.get('D_DB_PASSWORD'),
-        'HOST': '',
-        'PORT': '5432',
-    }
-}
 
 # Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
-
+# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validator
 AUTH_USER_MODEL = 'accounts.Profile'
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -148,3 +160,19 @@ LOGOUT_REDIRECT_URL = 'home'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 django_heroku.settings(locals())
+
+"""
+sentry_sdk.init(
+    dsn="https://a56a7b252f1d45ccbf382695c8010a4a@o1097635.ingest.sentry.io/6119249",
+    integrations=[DjangoIntegration()],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)
+"""
