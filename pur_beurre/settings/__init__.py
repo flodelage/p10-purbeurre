@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_crontab',
+
     'catalog',
     'accounts',
 ]
@@ -148,3 +150,8 @@ LOGOUT_REDIRECT_URL = 'home'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 django_heroku.settings(locals())
+
+
+CRONJOBS = [
+    ('0 7 * * 1', 'catalog.cron.update_db')
+]

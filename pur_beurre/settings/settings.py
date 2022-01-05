@@ -14,8 +14,8 @@ from django.conf import global_settings
 
 import django_heroku
 
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
+# import sentry_sdk
+# from sentry_sdk.integrations.django import DjangoIntegration
 
 
 MESSAGE_TAGS = {
@@ -48,7 +48,7 @@ if os.environ.get('ENV') == 'production':
 	}
 else:
 	SECRET_KEY = os.environ.get('D_DJANGO_KEY')
-	DEBUG = False
+	DEBUG = True
 	DATABASES = {
     		'default': {
         		'ENGINE': 'django.db.backends.postgresql',
@@ -71,6 +71,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_crontab',
 
     'catalog',
     'accounts',
@@ -160,6 +162,12 @@ LOGOUT_REDIRECT_URL = 'home'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 django_heroku.settings(locals())
+
+
+CRONJOBS = [
+    ('0 7 * * 1', 'catalog.cron.update_db')
+]
+
 
 """
 sentry_sdk.init(
