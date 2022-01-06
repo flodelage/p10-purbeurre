@@ -14,6 +14,7 @@ from django.conf import global_settings
 
 import django_heroku
 
+import raven
 # import sentry_sdk
 # from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -33,6 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
+# Production settings:
 if os.environ.get('ENV') == 'production':
 	SECRET_KEY = os.environ.get('P_DJANGO_KEY')
 	DEBUG = False
@@ -46,6 +48,8 @@ if os.environ.get('ENV') == 'production':
         		'PORT': '5432',
 		}
 	}
+
+# Development settings:
 else:
 	SECRET_KEY = os.environ.get('D_DJANGO_KEY')
 	DEBUG = True
@@ -73,6 +77,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_crontab',
+    'raven.contrib.django.raven_compat'
 
     'catalog',
     'accounts',
@@ -164,11 +169,63 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 django_heroku.settings(locals())
 
 
+# Cron settings:
 CRONJOBS = [
     ('0 7 * * 1', 'catalog.cron.update_db')
 ]
 
 
+# Sentry settings:
+RAVEN_CONFIG = {
+    'dsn': 'https://somethingverylong@sentry.io/216272', # caution replace by your own!!
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'root': {
+        'level': 'INFO', # WARNING by default. Change this to capture more than warnings.
+        'handlers': ['sentry'],
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s '
+                    '%(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'sentry': {
+            'level': 'INFO', # To capture more than ERROR, change to WARNING, INFO, etc.
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            'tags': {'custom-tag': 'x'},
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'raven': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+    },
+}
 """
 sentry_sdk.init(
     dsn="https://a56a7b252f1d45ccbf382695c8010a4a@o1097635.ingest.sentry.io/6119249",
