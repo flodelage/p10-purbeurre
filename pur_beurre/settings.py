@@ -53,8 +53,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'django_crontab',
-
     'catalog',
     'accounts',
 ]
@@ -157,10 +155,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 django_heroku.settings(locals())
 
 
-# Cron settings:
-CRONJOBS = [
-    ('0 7 * * 1', 'catalog.cron.update_db')
-]
 
 
 """

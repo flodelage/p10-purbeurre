@@ -1,6 +1,7 @@
 
 import requests
 from django.db.utils import IntegrityError
+from json import JSONDecodeError
 
 from catalog.utils.exceptions import RequestResponse404
 from catalog.models import Category, Product
@@ -37,7 +38,7 @@ class Populate():
             cls.categories_list.append(category)
             if len(cls.categories_list) == categories_number:
                 break
-        Category.objects.bulk_create(cls.categories_list)
+        Category.objects.bulk_create(cls.categories_list, ignore_conflicts=True)
 
     @classmethod
     def is_product_name_valid(cls, product_name):
@@ -117,7 +118,7 @@ class Populate():
                                     except Category.DoesNotExist:
                                         continue
                                 last_product.save()
-                            except (KeyError, IntegrityError):
+                            except (KeyError, IntegrityError, JSONDecodeError):
                                 continue
                     except KeyError:
                         continue
