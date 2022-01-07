@@ -5,5 +5,3 @@ __pycache__
 
 env/
 .env
-
-pur_beurre/settings/production.py
