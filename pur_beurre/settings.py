@@ -15,9 +15,8 @@ from django.conf import global_settings
 import django_heroku
 from dotenv import load_dotenv
 
-# import sentry_sdk
-# from sentry_sdk.integrations.django import DjangoIntegration
-
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 
 MESSAGE_TAGS = {
@@ -155,9 +154,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 django_heroku.settings(locals())
 
 
-
-
-"""
+# Sentry:
 sentry_sdk.init(
     dsn="https://a56a7b252f1d45ccbf382695c8010a4a@o1097635.ingest.sentry.io/6119249",
     integrations=[DjangoIntegration()],
@@ -171,4 +168,3 @@ sentry_sdk.init(
     # django.contrib.auth) you may enable sending PII data.
     send_default_pii=True
 )
-"""
