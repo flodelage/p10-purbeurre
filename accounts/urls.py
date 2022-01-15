@@ -32,4 +32,8 @@ urlpatterns = [
     path('favorite/<int:favorite_pk>/delete/',
          views.delete_favorite,
          name='delete_favorite'),
+
+     path('password_reset',
+          views.password_reset_request,
+          name='password_reset')
 ]

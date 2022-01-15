@@ -1,11 +1,18 @@
 
 from django.shortcuts import redirect, render, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.decorators import login_required
-from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.tokens import default_token_generator
+from django.conf import settings
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.core.mail import send_mail, BadHeaderError
+from django.template.loader import render_to_string
+from django.db.models.query_utils import Q
 
+from accounts.models import Profile
 from catalog.models import Favorite
 from .forms import ProfileCreationForm
 
@@ -75,6 +82,36 @@ def favorites_list(request):
     return render(request, 'accounts/favorites_list.html',
                   context = {'profile': profile,
                              'favorites': favorites, })
+
+
+def password_reset_request(request):
+	if request.method == "POST":
+		password_reset_form = PasswordResetForm(request.POST)
+		if password_reset_form.is_valid():
+			data = password_reset_form.cleaned_data['email']
+			associated_profiles = Profile.objects.filter(Q(email=data))
+			if associated_profiles:
+				for profile in associated_profiles:
+					subject = "Password Reset Requested"
+					email_template_name = "accounts/password/password_reset_email.txt"
+					c = {
+					"email":profile.email,
+					'domain':'127.0.0.1:8000',
+					'site_name': 'Website',
+					"uid": urlsafe_base64_encode(force_bytes(profile.pk)),
+					"profile": profile,
+					'token': default_token_generator.make_token(profile),
+					'protocol': 'http',
+					}
+					email = render_to_string(email_template_name, c)
+					try:
+						send_mail(subject, email, 'admin@example.com' , [profile.email], fail_silently=False)
+					except BadHeaderError:
+						return HttpResponse('Invalid header found.')
+
+					return redirect ("/password_reset/done/")
+	password_reset_form = PasswordResetForm()
+	return render(request, "accounts/password/password_reset.html", {"password_reset_form":password_reset_form})
 
 
 @login_required
