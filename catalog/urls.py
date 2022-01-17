@@ -8,7 +8,7 @@ urlpatterns = [
          views.get_user_input,
          name='get_user_input'),
 
-    path('<str:user_input>/products/',
+    path('<str:user_input>/matching-products/',
          views.products_list,
          name='products_list'),
 
