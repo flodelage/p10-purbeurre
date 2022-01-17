@@ -55,25 +55,27 @@
 
     <!-- pagination -->
     {% if products.has_other_pages %}
-        <ul class="pagination">
-        {% if products.has_previous %}
-            <li class="page-item"><a href="?page={{ products.previous_page_number }}">&laquo;</a></li>
-        {% else %}
-            <li class="disabled"><span>&laquo;</span></li>
-        {% endif %}
-        {% for i in products.paginator.page_range %}
-            {% if products.number == i %}
-            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        <div class="pagination">
+            {% if products.has_previous %}
+                <a href="?page={{ products.previous_page_number }}">&laquo;</a>
             {% else %}
-            <li class="page-item"><a href="?page={{ i }}">{{ i }}</a></li>
+                <a>&laquo;</a>
             {% endif %}
-        {% endfor %}
-        {% if products.has_next %}
-            <li><a href="?page={{ products.next_page_number }}">&raquo;</a></li>
-        {% else %}
-            <li class="disabled"><span>&raquo;</span></li>
-        {% endif %}
-        </ul>
+
+            {% for i in products.paginator.page_range %}
+                {% if products.number == i %}
+                    <a class="active">{{ i }}<a>
+                {% else %}
+                    <a href="?page={{ i }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if products.has_next %}
+                <a href="?page={{ products.next_page_number }}">&raquo;</a>
+            {% else %}
+                <a>&raquo;</a>
+            {% endif %}
+        </div>
     {% endif %}
 
 </div>

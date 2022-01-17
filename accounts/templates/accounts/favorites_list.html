@@ -68,25 +68,27 @@
 
     <!-- pagination -->
     {% if favorites.has_other_pages %}
-        <ul class="pagination">
-        {% if favorites.has_previous %}
-            <li class="page-item"><a href="?page={{ favorites.previous_page_number }}">&laquo;</a></li>
-        {% else %}
-            <li class="disabled"><span>&laquo;</span></li>
-        {% endif %}
-        {% for i in favorites.paginator.page_range %}
-            {% if favorites.number == i %}
-            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        <div class="pagination">
+            {% if favorites.has_previous %}
+                <a href="?page={{ favorites.previous_page_number }}">&laquo;</a>
             {% else %}
-            <li class="page-item"><a href="?page={{ i }}">{{ i }}</a></li>
+                <a id="inactive">&laquo;</a>
             {% endif %}
-        {% endfor %}
-        {% if favorites.has_next %}
-            <li><a href="?page={{ favorites.next_page_number }}">&raquo;</a></li>
-        {% else %}
-            <li class="disabled"><span>&raquo;</span></li>
-        {% endif %}
-        </ul>
+
+            {% for i in favorites.paginator.page_range %}
+                {% if favorites.number == i %}
+                    <a class="active">{{ i }}<a>
+                {% else %}
+                    <a href="?page={{ i }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if favorites.has_next %}
+                <a href="?page={{ favorites.next_page_number }}">&raquo;</a>
+            {% else %}
+                <a>&raquo;</a>
+            {% endif %}
+        </div>
     {% endif %}
 
 </div>

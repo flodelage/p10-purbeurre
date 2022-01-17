@@ -11939,3 +11939,30 @@ font-size: 1rem;
     font-size: 16px;
   }
 }
+
+
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
+.pagination a.active {
+  background-color: var(--moules);
+  color: white;
+}
+
+.pagination a:hover:not(.active) {
+  color: white;
+  background-color: var(--moules);
+  opacity: 0.2;
+}
