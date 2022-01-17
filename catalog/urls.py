@@ -4,9 +4,17 @@ from catalog import views
 
 
 urlpatterns = [
-    path('products/',
+    path('get_user_input/',
+         views.get_user_input,
+         name='get_user_input'),
+
+    path('<str:user_input>/products/',
          views.products_list,
          name='products_list'),
+
+    path('all_products/',
+         views.all_products_list,
+         name='all_products_list'),
 
     path('product/<int:product_pk>/',
          views.product_detail,

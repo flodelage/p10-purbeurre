@@ -18,16 +18,30 @@ def home(request):
     Return Home template
     """
     home_form = HomeSearchForm()
-    products = Product.objects.all()
-    return render(request, 'catalog/home.html',
-                  context = {'home_form': home_form,
-                             'products': products})
+    return render(request, 'catalog/home.html', {'home_form': home_form})
 
 
-def products_list(request):
+def get_user_input(request):
+    """
+    Get the user input from search forms and redirects to the
+    correct the view in terms of the input is empty or not.
+    It avoids an issue with pagination when this algorithm is
+    in the view.
+    """
+    user_input = request.GET.get('query', default='')
+    if user_input == '':
+        return redirect(
+            reverse('all_products_list')
+        )
+    else:
+        return redirect(
+            reverse('products_list', kwargs={'user_input': user_input})
+        )
+
+
+def products_list(request, user_input):
     """
     Allow a user to see a specific products list.
-    If his input is empty: return all products from the database.
     If his input matches with a category name: return all products
     from this category.
     If his input matches with products name: return all products
@@ -35,23 +49,43 @@ def products_list(request):
     If his input matches with nothing: template will inform user
     that there is no result.
     """
-    if request.method == 'POST':
-        form = SearchForm(request.POST)
-        if form.is_valid():
-            user_input = form.cleaned_data['search']
-            if user_input == '':
-                products = Product.objects.all().order_by('-nutriscore')
-            else:
-                products = Product.objects.filter(
-                        Q(name__icontains=user_input) |
-                        Q(categories__name__icontains=user_input)
-                    ).order_by('-nutriscore')
-        paginator = Paginator(products,6)
-        page = request.GET.get('page', 1)
-        products = paginator.page(page)
-        context = {'user_input': user_input,
-                   'products': products}
-    return render(request, 'catalog/products_list.html', context)
+    products = Product.objects.filter(
+            Q(name__icontains=user_input) |
+            Q(categories__name__icontains=user_input)
+    ).distinct().order_by('-nutriscore')
+
+    p = Paginator(products, 6)
+    page_number = request.GET.get('page')
+    try:
+        products = p.get_page(page_number)  # returns the desired page object
+    except PageNotAnInteger:
+        # if page_number is not an integer then assign the first page
+        products = p.page(1)
+    except EmptyPage:
+        # if page is empty then return last page
+        products = p.page(p.num_pages)
+    return render(request, 'catalog/products_list.html', {'user_input': user_input, 'products': products})
+
+
+def all_products_list(request):
+    """
+    Display all database products
+    """
+    products = Product.objects.all().order_by('-nutriscore')
+
+    p = Paginator(products, 6)
+    page_number = request.GET.get('page')
+    try:
+        products = p.get_page(page_number)  # returns the desired page object
+    except PageNotAnInteger:
+        # if page_number is not an integer then assign the first page
+        products = p.page(1)
+    except EmptyPage:
+        # if page is empty then return last page
+        products = p.page(p.num_pages)
+    return render(
+        request, 'catalog/products_list.html', {'products': products}
+    )
 
 
 def product_detail(request, product_pk):

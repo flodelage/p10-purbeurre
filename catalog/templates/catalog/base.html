@@ -35,8 +35,7 @@
       </a>
 
       <div class="navbar-search-and-links">
-        <form id="navbar-search" class="form-inline" method="POST" action="{% url 'products_list' %}">
-          {% csrf_token %}
+        <form id="navbar-search" class="form-inline" method="GET" action="{% url 'get_user_input' %}">
           {{ navbar_form }}
         </form>
 
