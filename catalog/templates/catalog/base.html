@@ -35,10 +35,9 @@
       </a>
 
       <div class="navbar-search-and-links">
-        <form id="navbar-search" class="form-inline" method="GET" action="{% url 'get_user_input' %}">
-          {{ navbar_form }}
+        <form id="navbar-search" class="form-inline" action="{% url 'get_user_input' %}" method="GET">
+          <input id="search_input" name="query" type="text" placeholder="chercher">
         </form>
-
         <ul class="navbar-links">
           {% if user.is_authenticated %}
             <li class="nav-item"><a class="nav-link" href="{% url 'account' %}"><i class="fas fa-user"></i></a></li>

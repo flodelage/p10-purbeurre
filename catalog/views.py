@@ -104,9 +104,10 @@ def substitutes_list(request, product_pk):
     """
     product = get_object_or_404(Product, pk=product_pk)
     categories = Category.objects.filter(products__id=product.id)
-    substitutes = Product.objects.filter(categories__in=categories,
-                                         nutriscore__lt=product.nutriscore)
-    substitutes = set(substitutes)
+    substitutes = Product.objects.filter(
+        categories__in=categories,
+        nutriscore__lt=product.nutriscore
+    ).distinct()
     return render(request, 'catalog/substitutes_list.html',
                   context = {'product': product,
                              'substitutes': substitutes, })
