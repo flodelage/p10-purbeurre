@@ -53,11 +53,11 @@
         </div>
     </div>
 
-
+    <!-- pagination -->
     {% if products.has_other_pages %}
         <ul class="pagination">
         {% if products.has_previous %}
-            <li><a href="?page={{ products.previous_page_number }}">&laquo;</a></li>
+            <li class="page-item"><a href="?page={{ products.previous_page_number }}">&laquo;</a></li>
         {% else %}
             <li class="disabled"><span>&laquo;</span></li>
         {% endif %}
@@ -65,7 +65,7 @@
             {% if products.number == i %}
             <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
             {% else %}
-            <li><a href="?page={{ i }}">{{ i }}</a></li>
+            <li class="page-item"><a href="?page={{ i }}">{{ i }}</a></li>
             {% endif %}
         {% endfor %}
         {% if products.has_next %}
@@ -75,5 +75,6 @@
         {% endif %}
         </ul>
     {% endif %}
+
 </div>
 {% endblock content %}

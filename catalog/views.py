@@ -107,7 +107,18 @@ def substitutes_list(request, product_pk):
     substitutes = Product.objects.filter(
         categories__in=categories,
         nutriscore__lt=product.nutriscore
-    ).distinct()
+    ).distinct().order_by('nutriscore')
+
+    p = Paginator(substitutes, 6)
+    page_number = request.GET.get('page')
+    try:
+        substitutes = p.get_page(page_number)  # returns the desired page object
+    except PageNotAnInteger:
+        # if page_number is not an integer then assign the first page
+        substitutes = p.page(1)
+    except EmptyPage:
+        # if page is empty then return last page
+        substitutes = p.page(p.num_pages)
     return render(request, 'catalog/substitutes_list.html',
                   context = {'product': product,
                              'substitutes': substitutes, })
