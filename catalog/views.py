@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
+from django.core.paginator import Paginator
 
 from .models import Product, Category, Favorite
 from .forms import SearchForm, HomeSearchForm
@@ -39,17 +40,17 @@ def products_list(request):
         if form.is_valid():
             user_input = form.cleaned_data['search']
             if user_input == '':
-                products = Product.objects.all()
+                products = Product.objects.all().order_by('-nutriscore')
             else:
                 products = Product.objects.filter(
-                    Q(name__icontains=user_input) |
-                    Q(categories__name__icontains=user_input)
-                )
-        products = set(products)
+                        Q(name__icontains=user_input) |
+                        Q(categories__name__icontains=user_input)
+                    ).order_by('-nutriscore')
+        paginator = Paginator(products,6)
+        page = request.GET.get('page', 1)
+        products = paginator.page(page)
         context = {'user_input': user_input,
-                   'products': products, }
-    else:
-        context = {}
+                   'products': products}
     return render(request, 'catalog/products_list.html', context)
 
 
