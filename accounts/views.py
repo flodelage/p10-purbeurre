@@ -11,6 +11,7 @@ from django.utils.encoding import force_bytes
 from django.core.mail import send_mail, BadHeaderError
 from django.template.loader import render_to_string
 from django.db.models.query_utils import Q
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from accounts.models import Profile
 from catalog.models import Favorite
@@ -78,7 +79,18 @@ def favorites_list(request):
     Allow a logged in user to see his profile details
     """
     profile = request.user
-    favorites = profile.favorite_set.all()
+    favorites = profile.favorite_set.all().order_by('substitute__nutriscore')
+
+    p = Paginator(favorites, 6)
+    page_number = request.GET.get('page')
+    try:
+        favorites = p.get_page(page_number)  # returns the desired page object
+    except PageNotAnInteger:
+        # if page_number is not an integer then assign the first page
+        favorites = p.page(1)
+    except EmptyPage:
+        # if page is empty then return last page
+        favorites = p.page(p.num_pages)
     return render(request, 'accounts/favorites_list.html',
                   context = {'profile': profile,
                              'favorites': favorites, })
