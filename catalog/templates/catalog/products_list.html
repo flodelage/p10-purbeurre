@@ -55,6 +55,7 @@
 
     <!-- pagination -->
     {% if products.has_other_pages %}
+        {{products.paginator.page_range}}
         <div class="pagination">
             {% if products.has_previous %}
                 <a href="?page={{ products.previous_page_number }}">&laquo;</a>
@@ -65,8 +66,8 @@
             {% for i in products.paginator.page_range %}
                 {% if products.number == i %}
                     <a class="active">{{ i }}<a>
-                {% else %}
-                    <a href="?page={{ i }}">{{ i }}</a>
+                {% elif i <= products.number|add:5 and i >= products.number|add:-5 %}
+                    <a href="?page={{forloop.counter}}">{{forloop.counter}}</a>
                 {% endif %}
             {% endfor %}
 

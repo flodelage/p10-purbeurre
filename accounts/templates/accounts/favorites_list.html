@@ -78,8 +78,8 @@
             {% for i in favorites.paginator.page_range %}
                 {% if favorites.number == i %}
                     <a class="active">{{ i }}<a>
-                {% else %}
-                    <a href="?page={{ i }}">{{ i }}</a>
+                {% elif i <= favorites.number|add:5 and i >= favorites.number|add:-5 %}
+                    <a href="?page={{forloop.counter}}">{{forloop.counter}}</a>
                 {% endif %}
             {% endfor %}
 

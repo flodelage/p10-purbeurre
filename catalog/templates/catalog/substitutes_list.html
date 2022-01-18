@@ -81,9 +81,9 @@
 
             {% for i in substitutes.paginator.page_range %}
                 {% if substitutes.number == i %}
-                    <a>{{ i }}<a>
-                {% else %}
-                    <a href="?page={{ i }}">{{ i }}</a>
+                    <a class="active">{{ i }}<a>
+                {% elif i <= substitutes.number|add:5 and i >= substitutes.number|add:-5 %}
+                    <a href="?page={{forloop.counter}}">{{forloop.counter}}</a>
                 {% endif %}
             {% endfor %}
 
