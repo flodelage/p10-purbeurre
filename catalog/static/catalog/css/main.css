@@ -11940,8 +11940,7 @@ font-size: 1rem;
   }
 }
 
-
-
+/* pagination */
 .pagination {
   display: flex;
   flex-wrap: wrap;
@@ -11965,4 +11964,10 @@ font-size: 1rem;
   color: white;
   background-color: var(--moules);
   opacity: 0.2;
+}
+
+/* autocomplete */
+.autocomplete-input, .autocomplete-result {
+  font-family: var(--bs-font-scope-one);
+  color: #212529;
 }

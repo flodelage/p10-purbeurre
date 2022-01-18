@@ -23,6 +23,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet">
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{% static 'catalog/css/main.css' %}" rel="stylesheet">
+    <!-- Autocomplete-js -->
+    <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"/>
   </head>
   <body id="page-top">
     <!-- Navigation-->
@@ -73,6 +75,29 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <!-- Axios-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <!-- Autocomplete-js-->
+    <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+
+    <script>
+      new Autocomplete('#autocomplete', {
+
+        search : input =>{
+          console.log(input)
+          const url = `/catalog/search_product/?query=${input}`
+          return new Promise(resolve =>{
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+              console.log(data)
+              resolve(data.data)
+            })
+          })
+        },
+        onSubmit : result => {
+          window.open(`/catalog/get_user_input/?query=${result}`, '_self')
+        },
+      })
+    </script>
 
   </body>
   </html>

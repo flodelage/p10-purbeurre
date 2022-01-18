@@ -1,6 +1,6 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.db import IntegrityError
 from django.db.models import Q
@@ -19,6 +19,21 @@ def home(request):
     """
     home_form = HomeSearchForm()
     return render(request, 'catalog/home.html', {'home_form': home_form})
+
+
+def search_product(request):
+    user_input = request.GET.get('query', default='')
+    payload = []
+    if user_input:
+        products = Product.objects.filter(
+            Q(name__icontains=user_input) |
+            Q(categories__name__icontains=user_input)
+        ).distinct().order_by('-nutriscore')
+
+        for product in products:
+            payload.append(product.name)
+
+    return JsonResponse({'data': payload})
 
 
 def get_user_input(request):
