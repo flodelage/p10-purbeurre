@@ -81,7 +81,7 @@ def favorites_list(request):
     profile = request.user
     favorites = profile.favorite_set.all().order_by('substitute__nutriscore')
 
-    p = Paginator(favorites, 6)
+    p = Paginator(favorites, 60)
     page_number = request.GET.get('page')
     try:
         favorites = p.get_page(page_number)  # returns the desired page object

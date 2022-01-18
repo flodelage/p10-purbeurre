@@ -54,7 +54,7 @@ def products_list(request, user_input):
             Q(categories__name__icontains=user_input)
     ).distinct().order_by('-nutriscore')
 
-    p = Paginator(products, 6)
+    p = Paginator(products, 60)
     page_number = request.GET.get('page')
     try:
         products = p.get_page(page_number)  # returns the desired page object
@@ -73,7 +73,7 @@ def all_products_list(request):
     """
     products = Product.objects.all().order_by('-nutriscore')
 
-    p = Paginator(products, 6)
+    p = Paginator(products, 60)
     page_number = request.GET.get('page')
     try:
         products = p.get_page(page_number)  # returns the desired page object
