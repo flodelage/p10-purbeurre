@@ -40,7 +40,7 @@ SECRET_KEY = os.getenv('DJANGO_KEY')
 DEBUG = os.getenv('DEBUG')
 
 
-ALLOWED_HOSTS = ['159.65.61.135']
+ALLOWED_HOSTS = os.getenv('HOSTS')
 
 
 # Application definition
