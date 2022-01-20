@@ -4,6 +4,10 @@ from catalog import views
 
 
 urlpatterns = [
+     path('search_product/',
+         views.search_product,
+         name='search_product'),
+
     path('get_user_input/',
          views.get_user_input,
          name='get_user_input'),
@@ -27,9 +31,4 @@ urlpatterns = [
     path('favorite_save/product/<int:product_pk>/substitute/<int:substitute_pk>/',
          views.favorite_save,
          name='favorite_save'),
-    
-    
-     path('search_product/',
-         views.search_product,
-         name='search_product'),
 ]

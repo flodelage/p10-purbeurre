@@ -97,33 +97,38 @@ def favorites_list(request):
 
 
 def password_reset_request(request):
-	if request.method == "POST":
-		password_reset_form = PasswordResetForm(request.POST)
-		if password_reset_form.is_valid():
-			data = password_reset_form.cleaned_data['email']
-			associated_profiles = Profile.objects.filter(Q(email=data))
-			if associated_profiles:
-				for profile in associated_profiles:
-					subject = "Password Reset Requested"
-					email_template_name = "accounts/password/password_reset_email.txt"
-					c = {
-					"email":profile.email,
-					'domain':'127.0.0.1:8000',
-					'site_name': 'Website',
-					"uid": urlsafe_base64_encode(force_bytes(profile.pk)),
-					"profile": profile,
-					'token': default_token_generator.make_token(profile),
-					'protocol': 'http',
-					}
-					email = render_to_string(email_template_name, c)
-					try:
-						send_mail(subject, email, 'admin@example.com' , [profile.email], fail_silently=False)
-					except BadHeaderError:
-						return HttpResponse('Invalid header found.')
-
-					return redirect ("/password_reset/done/")
-	password_reset_form = PasswordResetForm()
-	return render(request, "accounts/password/password_reset.html", {"password_reset_form":password_reset_form})
+    if request.method == "POST":
+        password_reset_form = PasswordResetForm(request.POST)
+        if password_reset_form.is_valid():
+            email = password_reset_form.cleaned_data['email']
+            profile = get_object_or_404(Profile, email=email)
+            if profile:
+                c = {
+                "email":profile.email,
+                'domain':settings.DOMAIN,
+                'site_name': 'Pur-Beurre',
+                "uid": urlsafe_base64_encode(force_bytes(profile.pk)),
+                "profile": profile,
+                'token': default_token_generator.make_token(profile),
+                'protocol': 'http',
+                }
+                subject = "Réinitialisation du mot de passe"
+                email_template_name = "accounts/password/password_reset_email.txt"
+                email_message = render_to_string(email_template_name, c)
+                try:
+                    send_mail(
+                        subject=subject,
+                        message=email_message,
+                        from_email=settings.EMAIL_HOST_USER,
+                        recipient_list=[profile.email],
+                        fail_silently=False
+                    )
+                    return redirect ("/password_reset/done/")
+                except BadHeaderError:
+                    return HttpResponse('Invalid header found.')
+    else:
+        password_reset_form = PasswordResetForm()
+        return render(request, "accounts/password/password_reset.html", {"password_reset_form":password_reset_form})
 
 
 @login_required
