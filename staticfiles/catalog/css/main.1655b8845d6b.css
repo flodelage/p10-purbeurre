@@ -11094,21 +11094,21 @@ header.masthead h1, header.masthead .h1 {
 }
 
 @media screen and (max-width: 768px) {
-  #id_search {
+  #search_input {
     height: 1.9rem;
     width: 12rem;
     font-size: 0.8rem;
   }
 }
 @media screen and (max-width: 425px) {
-  #id_search {
+  #search_input {
     height: 1.7rem;
     width: 10rem;
     font-size: 0.7rem;
   }
 }
 @media screen and (max-width: 319px) {
-  #id_search {
+  #search_input {
     height: 1.5rem;
     width: 8rem;
     font-size: 0.6rem;
@@ -11279,7 +11279,7 @@ header.masthead h1, header.masthead .h1 {
   }
 }
 
-#id_search {
+#search_input {
   padding: 5px 0px 5px 5px;
 }
 
@@ -11938,4 +11938,61 @@ font-size: 1rem;
   .legal-mentions-container h3 {
     font-size: 16px;
   }
+}
+
+/* pagination */
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.pagination a {
+  font-size: 1rem;
+  color: black;
+  float: left;
+  padding: 4px 8px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+@media screen and (max-width: 768px) {
+  .pagination a {
+    font-size: 0.9rem;
+    padding: 4px 8px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .pagination a {
+    font-size: 0.8rem;
+    padding: 4px 6px;
+  }
+}
+@media screen and (max-width: 425px) {
+  .pagination a {
+    font-size: 0.7rem;
+    padding: 4px 4px;
+  }
+}
+@media screen and (max-width: 320px) {
+  .pagination a {
+    font-size: 0.7rem;
+    padding: 1px 2px;
+  }
+}
+
+.pagination a.active {
+  background-color: var(--moules);
+  color: white;
+}
+
+.pagination a:hover:not(.active) {
+  color: white;
+  background-color: var(--moules);
+  opacity: 0.2;
+}
+
+/* autocomplete */
+.autocomplete-input, .autocomplete-result {
+  font-family: var(--bs-font-scope-one);
+  color: #212529;
 }
