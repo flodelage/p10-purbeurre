@@ -11861,14 +11861,25 @@ font-size: 1rem;
 }
 
 @media screen and (max-width: 768px) {
-  .send-email .btn-primary {
+  .send-email .btn-primary, .reset-complete .btn-primary {
     font-size: 0.8rem;
   }
 }
 @media screen and (max-width: 425px) {
-  .send-email .btn-primary {
+  .send-email .btn-primary, .reset-complete .btn-primary {
     font-size: 0.7rem;
   }
+}
+
+.reset-complete {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reset-complete p {
+  margin-bottom: 12px;
 }
 
 /* favorite-detail */
