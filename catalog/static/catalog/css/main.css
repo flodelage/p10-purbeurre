@@ -11742,7 +11742,10 @@ font-size: 1rem;
 
 /* login / signup */
 .connection {
-  margin: 100px 0 0 0
+  margin: 100px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .connection .title h2 {
@@ -11815,6 +11818,53 @@ font-size: 1rem;
 
 .helptext {
   display: block;
+}
+
+/* reset password */
+#id_email {
+  height: 38px;
+  margin-left: 5px;
+  font-family: var(--bs-font-scope-one);
+}
+@media screen and (max-width: 768px) {
+  #id_email {
+    height: 33px;
+    width: 160px;
+    font-size: 0.8rem;
+  }
+}
+@media screen and (max-width: 425px) {
+  #id_email {
+    height: 30px;
+    width: 120px;
+    font-size: 0.7rem;
+  }
+}
+
+.send-email {
+  margin-top: 30px;
+}
+
+@media screen and (max-width: 768px) {
+  .send-email label {
+    font-size: 0.8rem;
+  }
+}
+@media screen and (max-width: 425px) {
+  .send-email label {
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .send-email .btn-primary {
+    font-size: 0.8rem;
+  }
+}
+@media screen and (max-width: 425px) {
+  .send-email .btn-primary {
+    font-size: 0.7rem;
+  }
 }
 
 /* favorite-detail */
