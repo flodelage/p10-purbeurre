@@ -11821,24 +11821,28 @@ font-size: 1rem;
 }
 
 /* reset password */
-#id_email {
+#id_email, #id_new_password1, #id_new_password2 {
   height: 38px;
   margin-left: 5px;
   font-family: var(--bs-font-scope-one);
 }
 @media screen and (max-width: 768px) {
-  #id_email {
+  #id_email, #id_new_password1, #id_new_password2 {
     height: 33px;
     width: 160px;
     font-size: 0.8rem;
   }
 }
 @media screen and (max-width: 425px) {
-  #id_email {
+  #id_email, #id_new_password1, #id_new_password2 {
     height: 30px;
     width: 120px;
     font-size: 0.7rem;
   }
+}
+
+#id_new_password1 {
+  margin-bottom: 12px;
 }
 
 .send-email {
@@ -11846,12 +11850,12 @@ font-size: 1rem;
 }
 
 @media screen and (max-width: 768px) {
-  .send-email label {
+  .send-email label, li {
     font-size: 0.8rem;
   }
 }
 @media screen and (max-width: 425px) {
-  .send-email label {
+  .send-email label, li {
     font-size: 0.7rem;
   }
 }
