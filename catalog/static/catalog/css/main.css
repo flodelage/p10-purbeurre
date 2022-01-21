@@ -11750,6 +11750,11 @@ font-size: 1rem;
   margin: 0;
 }
 
+.connection .signup-link {
+  display: flex;
+  flex-direction: column;
+}
+
 .connection .signup-link a {
   text-decoration: none;
   color: var(--bonbon);
