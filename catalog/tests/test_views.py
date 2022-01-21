@@ -24,19 +24,15 @@ class HomeViewTest(TestCase):
 class ProductsListViewTest(TestCase):
 
     def test_products_list_view_url_exists_at_desired_location_get_request(self):
-        response = self.client.get('/catalog/products/')
-        self.assertEqual(response.status_code, 200)
-
-    def test_products_list_view_url_exists_at_desired_location_post_request(self):
-        response = self.client.post('/catalog/products/')
+        response = self.client.get('/catalog/Nutella/matching-products/')
         self.assertEqual(response.status_code, 200)
 
     def test_products_list_view_url_accessible_by_name(self):
-        response = self.client.get(reverse('products_list'))
+        response = self.client.get(reverse('products_list', kwargs={'user_input': 'Nutella'}))
         self.assertEqual(response.status_code, 200)
 
     def test_products_list_view_uses_correct_template(self):
-        response = self.client.get(reverse('products_list'))
+        response = self.client.get(reverse('products_list', kwargs={'user_input': 'Nutella'}))
         self.assertTemplateUsed(response, 'catalog/products_list.html')
 
 
