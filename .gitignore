@@ -3,5 +3,12 @@ __pycache__
 .pytest_cache
 .vscode
 
+node_modules/
+
 env/
 .env
+
+coverage_report_html/
+.coverage
+.coveragerc
+

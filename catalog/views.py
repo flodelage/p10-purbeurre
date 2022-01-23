@@ -39,7 +39,7 @@ def search_product(request):
 def get_user_input(request):
     """
     Get the user input from search forms and redirects to the
-    correct the view in terms of the input is empty or not.
+    correct view in terms of the input is empty or not.
     It avoids an issue with pagination when this algorithm is
     in the view.
     """
