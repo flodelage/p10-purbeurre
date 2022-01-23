@@ -21,6 +21,17 @@ class HomeViewTest(TestCase):
         self.assertTemplateUsed(response, 'catalog/home.html')
 
 
+class GetUserInputViewTest(TestCase):
+
+    def test_get_user_input_view_url_exists_at_desired_location_get_request(self):
+        response = self.client.get('/catalog/get_user_input/')
+        self.assertRedirects(response, '/catalog/all_products/', 302)
+
+    def test_get_user_input_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('get_user_input'))
+        self.assertRedirects(response, '/catalog/all_products/', 302)
+
+
 class ProductsListViewTest(TestCase):
 
     def test_products_list_view_url_exists_at_desired_location_get_request(self):
