@@ -43,6 +43,19 @@ class LoginViewTest(TestCase):
         self.assertTemplateUsed(response, 'accounts/registration/login.html')
 
 
+class LogoutViewTest(TestCase):
+    def setUp(self):
+        user = Profile.objects.create(username='vanrussom',
+                                      email='vanrussom@django.com')
+        user.set_password('Django56789')
+        user.save()
+
+    def test_logout_view_redirection(self):
+        self.client.login(email='vanrussom@django.com', password='Django56789')
+        response = self.client.get(reverse('logout'))
+        self.assertRedirects(response, '/', 302)
+
+
 class AccountViewTest(TestCase):
 
     def setUp(self):
