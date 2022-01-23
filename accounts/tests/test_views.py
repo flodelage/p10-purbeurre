@@ -44,6 +44,7 @@ class LoginViewTest(TestCase):
 
 
 class LogoutViewTest(TestCase):
+
     def setUp(self):
         user = Profile.objects.create(username='vanrussom',
                                       email='vanrussom@django.com')
@@ -54,6 +55,14 @@ class LogoutViewTest(TestCase):
         self.client.login(email='vanrussom@django.com', password='Django56789')
         response = self.client.get(reverse('logout'))
         self.assertRedirects(response, '/', 302)
+
+
+class PasswordResetViewTest(TestCase):
+
+    def test_password_resest_view_uses_correct_template_get(self):
+        response = self.client.get(reverse('password_reset'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'accounts/password/password_reset.html')
 
 
 class AccountViewTest(TestCase):

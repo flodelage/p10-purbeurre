@@ -96,7 +96,7 @@ def favorites_list(request):
                              'favorites': favorites, })
 
 
-def password_reset_request(request):
+def password_reset(request):
     if request.method == "POST":
         password_reset_form = PasswordResetForm(request.POST)
         if password_reset_form.is_valid():
@@ -104,13 +104,13 @@ def password_reset_request(request):
             profile = get_object_or_404(Profile, email=email)
             if profile:
                 c = {
-                "email":profile.email,
-                'domain':settings.DOMAIN,
-                'site_name': 'Pur-Beurre',
-                "uid": urlsafe_base64_encode(force_bytes(profile.pk)),
-                "profile": profile,
-                'token': default_token_generator.make_token(profile),
-                'protocol': 'http',
+                    "email":profile.email,
+                    'domain':settings.DOMAIN,
+                    'site_name': 'Pur-Beurre',
+                    "uid": urlsafe_base64_encode(force_bytes(profile.pk)),
+                    "profile": profile,
+                    'token': default_token_generator.make_token(profile),
+                    'protocol': 'http'
                 }
                 subject = "Réinitialisation du mot de passe"
                 email_template_name = "accounts/password/password_reset_email.txt"
@@ -128,7 +128,11 @@ def password_reset_request(request):
                     return HttpResponse('Invalid header found.')
     else:
         password_reset_form = PasswordResetForm()
-        return render(request, "accounts/password/password_reset.html", {"password_reset_form":password_reset_form})
+        return render(
+            request,
+            'accounts/password/password_reset.html',
+            {'password_reset_form':password_reset_form}
+        )
 
 
 @login_required
