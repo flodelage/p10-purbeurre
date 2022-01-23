@@ -36,6 +36,21 @@ class ProductsListViewTest(TestCase):
         self.assertTemplateUsed(response, 'catalog/products_list.html')
 
 
+class AllProductsListViewTest(TestCase):
+
+    def test_all_products_list_view_url_exists_at_desired_location_get_request(self):
+        response = self.client.get('/catalog/all_products/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_all_products_list_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('all_products_list'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_all_products_list_view_uses_correct_template(self):
+        response = self.client.get(reverse('all_products_list'))
+        self.assertTemplateUsed(response, 'catalog/products_list.html')
+
+
 class ProductDetailView(TestCase):
 
     def setUp(self):
