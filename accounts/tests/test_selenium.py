@@ -6,9 +6,9 @@ from selenium.webdriver.common.action_chains import ActionChains
 import selenium.webdriver.support.ui as ui
 
 
-class AutocompleteTest(LiveServerTestCase):
+class HomeTest(LiveServerTestCase):
 
-  def test_home_search(self):
+  def home_autocomplete_test(self):
     driver = webdriver.Chrome('/Users/floriandelage/Downloads/chromedriver')
     action = ActionChains(driver)
     wait = ui.WebDriverWait(driver, 1000)
