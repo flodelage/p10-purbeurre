@@ -97,6 +97,9 @@ def favorites_list(request):
 
 
 def password_reset(request):
+    """
+    Allow user to reset his password
+    """
     if request.method == "POST":
         password_reset_form = PasswordResetForm(request.POST)
         if password_reset_form.is_valid():

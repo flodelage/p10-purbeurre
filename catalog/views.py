@@ -79,7 +79,11 @@ def products_list(request, user_input):
     except EmptyPage:
         # if page is empty then return last page
         products = p.page(p.num_pages)
-    return render(request, 'catalog/products_list.html', {'user_input': user_input, 'products': products})
+    return render(
+        request,
+        'catalog/products_list.html',
+        {'user_input': user_input, 'products': products}
+    )
 
 
 def all_products_list(request):
@@ -127,7 +131,8 @@ def substitutes_list(request, product_pk):
     p = Paginator(substitutes, 6)
     page_number = request.GET.get('page')
     try:
-        substitutes = p.get_page(page_number)  # returns the desired page object
+        # returns the desired page object
+        substitutes = p.get_page(page_number)
     except PageNotAnInteger:
         # if page_number is not an integer then assign the first page
         substitutes = p.page(1)
