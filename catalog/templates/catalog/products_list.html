@@ -66,7 +66,7 @@
                 {% if products.number == i %}
                     <a class="active">{{ i }}<a>
                 {% elif i <= products.number|add:5 and i >= products.number|add:-5 %}
-                    <a href="?page={{forloop.counter}}">{{forloop.counter}}</a>
+                    <a id="page_{{forloop.counter}}" href="?page={{forloop.counter}}">{{forloop.counter}}</a>
                 {% endif %}
             {% endfor %}
 
