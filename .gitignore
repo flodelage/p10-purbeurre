@@ -12,3 +12,4 @@ coverage_report_html/
 .coverage
 .coveragerc
 
+.travis.yml

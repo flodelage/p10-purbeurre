@@ -37,4 +37,5 @@ class AllProductsListTest(LiveServerTestCase):
         page_two = driver.find_element_by_id('page_2')
         action.pause(3)
         action.move_to_element(page_two).click().perform()
+
         assert '/catalog/all_products/?page=2' in driver.current_url
